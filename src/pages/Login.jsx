@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 
 export default function Login() {
     const [form, setForm] = useState({ username: "", password: "" });
+    const navigate = useNavigate();
+    // 预设的测试账号
+    const testAccount = {
+        username: "admin",
+        password: "123456"
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,6 +18,14 @@ export default function Login() {
         }
         console.log("登录信息：", form);
         // TODO: 发送登录请求
+
+        // 检查是否匹配预设账号
+        if (form.username === testAccount.username && form.password === testAccount.password) {
+            console.log("登录成功，跳转到仪表盘");
+            navigate("/dashboard"); // 跳转到仪表盘页面
+        } else {
+            alert("用户名或密码错误");
+        }
     };
 
     return (
