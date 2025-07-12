@@ -4,13 +4,13 @@ import { useState } from "react";
 export default function Login() {
     const [form, setForm] = useState({ username: "", password: "" });
     const navigate = useNavigate();
-    // 预设的测试账号
-    const testAccount = {
-        username: "admin",
-        password: "123456"
-    };
+    // // 预设的测试账号
+    // const testAccount = {
+    //     username: "admin",
+    //     password: "123456"
+    // };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.username || !form.password) {
             alert("请填写所有字段");
@@ -19,13 +19,37 @@ export default function Login() {
         console.log("登录信息：", form);
         // TODO: 发送登录请求
 
-        // 检查是否匹配预设账号
-        if (form.username === testAccount.username && form.password === testAccount.password) {
-            console.log("登录成功，跳转到仪表盘");
-            navigate("/dashboard"); // 跳转到仪表盘页面
-        } else {
-            alert("用户名或密码错误");
+        // // 检查是否匹配预设账号
+        // if (form.username === testAccount.username && form.password === testAccount.password) {
+        //     console.log("登录成功，跳转到仪表盘");
+        //     navigate("/dashboard"); // 跳转到仪表盘页面
+        // } else {
+        //     alert("用户名或密码错误");
+        // }
+        try {
+            const res = await fetch("http://localhost:8080/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(form),
+            });
+
+            const result = await res.json();
+
+            if (result.code === "200") {
+                // 登录成功，保存 token
+                localStorage.setItem("token", result.data);
+                alert("登录成功！");
+                navigate("/dashboard");
+            } else {
+                alert("登录失败：" + result.msg);
+            }
+        } catch (err) {
+            console.error("请求出错", err);
+            alert("网络错误或服务器未启动");
         }
+
     };
 
     return (
