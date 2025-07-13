@@ -12,19 +12,28 @@ const Sidebar = () => {
             <h2 className="text-xl font-bold mb-4">体育预约系统</h2>
             <nav className="space-y-2">
                 <NavLink to="/dashboard/venues" className={linkClass}>
-                    活动场馆
+                    场馆一览
                 </NavLink>
-                <NavLink to="/dashboard/signup" className={linkClass}>
+                {role === 'admin' && (
+                    <NavLink to="/dashboard/createVenue" className={linkClass}>
+                        添加场馆
+                    </NavLink>
+                )}
+
+                {role==='user' && <NavLink to="/dashboard/signup" className={linkClass}>
                     活动报名
-                </NavLink>
+                </NavLink>}
                 {role === 'admin' && (
                     <NavLink to="/dashboard/create" className={linkClass}>
                         活动创建
                     </NavLink>
                 )}
-                <NavLink to="/dashboard/my-activities" className={linkClass}>
+                {role === 'admin' && (<NavLink to="/dashboard/my-activities" className={linkClass}>
+                    活动管理
+                </NavLink>)}
+                {role === 'user' && (<NavLink to="/dashboard/my-activities" className={linkClass}>
                     我的活动
-                </NavLink>
+                </NavLink>)}
                 <NavLink to="/dashboard/profile" className={linkClass}>
                     个人信息
                 </NavLink>
