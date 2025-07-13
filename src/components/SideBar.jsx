@@ -5,6 +5,8 @@ const Sidebar = () => {
     const linkClass =
         'block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition';
 
+    const role = localStorage.getItem("role");
+
     return (
         <div className="w-60 h-screen bg-white shadow-md p-4 pt-24">
             <h2 className="text-xl font-bold mb-4">体育预约系统</h2>
@@ -15,6 +17,11 @@ const Sidebar = () => {
                 <NavLink to="/dashboard/signup" className={linkClass}>
                     活动报名
                 </NavLink>
+                {role === 'admin' && (
+                    <NavLink to="/dashboard/create" className={linkClass}>
+                        活动创建
+                    </NavLink>
+                )}
                 <NavLink to="/dashboard/my-activities" className={linkClass}>
                     我的活动
                 </NavLink>

@@ -39,7 +39,8 @@ export default function Login() {
 
             if (result.code === "200") {
                 // 登录成功，保存 token
-                localStorage.setItem("token", result.data);
+                localStorage.setItem("token", result.data.token);
+                localStorage.setItem("role", result.data.role);
                 alert("登录成功！");
                 navigate("/dashboard");
             } else {

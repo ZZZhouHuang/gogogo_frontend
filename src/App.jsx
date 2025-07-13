@@ -8,6 +8,7 @@ import VenueList from './pages/VenueList';
 import SignupPage from './pages/SignupPage';
 import MyActivities from './pages/MyActivities';
 import ProfilePage from './pages/ProfilePage';
+import CreateActivities from "./pages/CreateActivities.jsx";
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                     <Route path="signup" element={<SignupPage />} />
                     <Route path="my-activities" element={<MyActivities />} />
                     <Route path="profile" element={<ProfilePage />} />
+                    <Route path="create" element={<CreateActivities />} />
                     <Route path="*" element={<div>请选择左侧菜单项</div>} />
                 </Route>
 
