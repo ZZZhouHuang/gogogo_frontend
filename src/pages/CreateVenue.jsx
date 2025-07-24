@@ -58,7 +58,7 @@ export default function CreateVenue() {
             const result = await res.json();
             if (result.code === '200') {
                 alert('创建成功');
-                setForm({ venueName: '', location: '', description: '', imageUrl: '' });
+                setForm({ name: '', location: '', description: '', imageUrl: '' });
                 setImageFile(null);
                 setPreviewUrl('');
             } else {
@@ -78,7 +78,7 @@ export default function CreateVenue() {
                     placeholder="场馆名称"
                     className="w-full border p-2 rounded"
                     value={form.venueName}
-                    onChange={(e) => setForm({ ...form, venueName: e.target.value })}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                 />
                 <input
