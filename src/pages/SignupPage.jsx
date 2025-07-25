@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignupPage() {
     const [activities, setActivities] = useState([]);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:8080/api/activity/allCurrent')
@@ -11,7 +13,7 @@ export default function SignupPage() {
             .then((data) => {
                 if (data.code === '200') {
                     setActivities(data.data);
-                    setSelectedActivity(data.data[0] || null); // 默认选中第一个
+                    setSelectedActivity(data.data[0] || null);
                 } else {
                     alert('获取活动失败: ' + data.msg);
                 }
@@ -27,6 +29,44 @@ export default function SignupPage() {
         if (!ts) return '';
         const str = ts.toString();
         return `${str.slice(0, 4)}-${str.slice(4, 6)}-${str.slice(6, 8)} ${str.slice(8, 10)}:${str.slice(10, 12)}`;
+    };
+
+    const handleSignup = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('请先登录');
+            navigate('/login');
+            return;
+        }
+
+        const userInfo = JSON.parse(atob(token.split('.')[1]));
+        
+
+        const payload = {
+            activityId: selectedActivity.id,
+        };
+
+        try {
+            const res = await fetch('http://localhost:8080/api/activity/signup', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            if (data.code === '200') {
+                alert('报名成功！');
+            } else {
+                alert('报名失败：' + data.msg);
+            }
+        } catch (error) {
+            console.error('报名请求出错:', error);
+            alert('报名失败');
+        }
     };
 
     if (loading) return <p className="p-4">加载中...</p>;
@@ -74,7 +114,7 @@ export default function SignupPage() {
                         <p className="text-gray-700 mt-4 mb-6">{selectedActivity.description}</p>
                         <button
                             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                            onClick={() => alert(`报名：${selectedActivity.activityName}`)}
+                            onClick={handleSignup}
                         >
                             我要报名
                         </button>
