@@ -39,8 +39,7 @@ export default function SignupPage() {
             return;
         }
 
-        const userInfo = JSON.parse(atob(token.split('.')[1]));
-        
+
 
         const payload = {
             activityId: selectedActivity.id,
