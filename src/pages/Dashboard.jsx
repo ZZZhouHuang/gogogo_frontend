@@ -11,8 +11,9 @@ export default function Dashboard() {
 
             <div className="flex">
                 <Sidebar />
-                <div className="flex-1 p-4">
-                    <div className="flex justify-end">
+                <div className="flex-1 ml-60 p-4 h-screen overflow-y-auto">
+
+                <div className="flex justify-end">
                         <UserMenu onLogout={() => {
                             localStorage.removeItem('token');
                             window.location.href = '/login';

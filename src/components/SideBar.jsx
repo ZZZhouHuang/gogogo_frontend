@@ -8,8 +8,9 @@ const Sidebar = () => {
     const role = localStorage.getItem("role");
 
     return (
-        <div className="w-60 h-screen bg-white shadow-md p-4 pt-24">
-            <h2 className="text-xl font-bold mb-4">体育预约系统</h2>
+        <div className="w-60 h-screen fixed left-0 top-0 bg-white shadow-md p-4 pt-24">
+
+        <h2 className="text-xl font-bold mb-4">体育预约系统</h2>
             <nav className="space-y-2">
                 <NavLink to="/dashboard/venues" className={linkClass}>
                     场馆一览
@@ -28,7 +29,7 @@ const Sidebar = () => {
                         活动创建
                     </NavLink>
                 )}
-                {role === 'admin' && (<NavLink to="/dashboard/my-activities" className={linkClass}>
+                {role === 'admin' && (<NavLink to="/dashboard/manageActivities" className={linkClass}>
                     活动管理
                 </NavLink>)}
                 {role === 'user' && (<NavLink to="/dashboard/my-activities" className={linkClass}>

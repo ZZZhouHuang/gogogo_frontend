@@ -10,6 +10,7 @@ import MyActivities from './pages/MyActivities';
 import ProfilePage from './pages/ProfilePage';
 import CreateActivities from "./pages/CreateActivities.jsx";
 import CreateVenue from './pages/CreateVenue';
+import ManageActivities from "./pages/ManageActivities.jsx";
 
 export default function App() {
     return (
@@ -25,6 +26,7 @@ export default function App() {
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="create" element={<CreateActivities />} />
                     <Route path="createVenue" element={<CreateVenue />} />
+                    <Route path="manageActivities" element={<ManageActivities />}></Route>
                     <Route path="*" element={<div>请选择左侧菜单项</div>} />
                 </Route>
 

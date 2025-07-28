@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function VenueList() {
     const [venues, setVenues] = useState([]);
+    const [selectedVenue, setSelectedVenue] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -12,6 +13,7 @@ export default function VenueList() {
                 const res = response.data;
                 if (res.code === "200") {
                     setVenues(res.data);
+                    setSelectedVenue(res.data[0] || null);
                 } else {
                     setError(res.msg || "获取场馆失败");
                 }
@@ -25,25 +27,47 @@ export default function VenueList() {
             });
     }, []);
 
-    if (loading) return <div className="text-center mt-8">加载中...</div>;
-    if (error) return <div className="text-center mt-8 text-red-500">{error}</div>;
+    if (loading) return <p className="p-4">加载中...</p>;
+    if (error) return <p className="p-4 text-red-500">{error}</p>;
 
     return (
-        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {venues.map(venue => (
-                <div key={venue.id} className="bg-white rounded-xl shadow-md overflow-hidden">
-                    <img
-                        src={venue.imageUrl}
-                        alt={venue.venueName}
-                        className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4">
-                        <h3 className="text-xl font-semibold text-green-700">{venue.venueName}</h3>
-                        <p className="text-sm text-gray-500 mt-1">{venue.location}</p>
-                        <p className="mt-2 text-gray-700">{venue.description}</p>
-                    </div>
+        <div className="flex flex-col md:flex-row max-w-6xl mx-auto mt-8 gap-6 p-4">
+            {/* 左侧场馆列表 */}
+            <div className="md:w-1/3 w-full">
+                <h2 className="text-xl font-bold mb-4 text-green-700">所有场馆</h2>
+                <div className="space-y-2">
+                    {venues.map((venue) => (
+                        <div
+                            key={venue.id}
+                            className={`border p-3 rounded cursor-pointer hover:bg-green-50 ${
+                                selectedVenue?.id === venue.id ? "border-green-500 bg-green-50" : ""
+                            }`}
+                            onClick={() => setSelectedVenue(venue)}
+                        >
+                            <h3 className="font-semibold">{venue.venueName}</h3>
+                            <p className="text-sm text-gray-600">{venue.location}</p>
+                        </div>
+                    ))}
                 </div>
-            ))}
+            </div>
+
+            {/* 右侧场馆详情 */}
+            <div className="md:w-2/3 w-full">
+                {selectedVenue ? (
+                    <div className="border rounded p-4 shadow bg-white">
+                        <img
+                            src={selectedVenue.imageUrl}
+                            alt={selectedVenue.venueName}
+                            className="w-full h-64 object-cover rounded mb-4"
+                        />
+                        <h2 className="text-2xl font-bold mb-2">{selectedVenue.venueName}</h2>
+                        <p className="text-gray-600 mb-1">位置：{selectedVenue.location}</p>
+                        <p className="text-gray-700 mt-4">{selectedVenue.description}</p>
+                    </div>
+                ) : (
+                    <p>请选择一个场馆查看详情</p>
+                )}
+            </div>
         </div>
     );
 }
