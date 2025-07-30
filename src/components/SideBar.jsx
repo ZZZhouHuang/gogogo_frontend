@@ -10,7 +10,7 @@ const Sidebar = () => {
     return (
         <div className="w-60 h-screen fixed left-0 top-0 bg-white shadow-md p-4 pt-24">
 
-        <h2 className="text-xl font-bold mb-4">体育预约系统</h2>
+        <h2 className="text-xl font-bold mb-4">Go go go!</h2>
             <nav className="space-y-2">
                 <NavLink to="/dashboard/venues" className={linkClass}>
                     场馆一览
