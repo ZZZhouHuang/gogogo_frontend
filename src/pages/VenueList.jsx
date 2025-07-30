@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import VenueSelectorForVenueList from "../components/VenueSelectorForVenueList.jsx";
 
 export default function VenueList() {
     const [venues, setVenues] = useState([]);
@@ -35,6 +36,11 @@ export default function VenueList() {
             {/* 左侧场馆列表 */}
             <div className="md:w-1/3 w-full">
                 <h2 className="text-xl font-bold mb-4 text-green-700">所有场馆</h2>
+                {/* 搜索选择器 */}
+                <VenueSelectorForVenueList
+                    venues={venues}
+                    onSelect={venue => setSelectedVenue(venue)}
+                />
                 <div className="space-y-2">
                     {venues.map((venue) => (
                         <div

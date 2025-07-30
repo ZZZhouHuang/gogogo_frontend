@@ -35,9 +35,6 @@ const Sidebar = () => {
                 {role === 'user' && (<NavLink to="/dashboard/my-activities" className={linkClass}>
                     我的活动
                 </NavLink>)}
-                <NavLink to="/dashboard/profile" className={linkClass}>
-                    个人信息
-                </NavLink>
             </nav>
         </div>
     );

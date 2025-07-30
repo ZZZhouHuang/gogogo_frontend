@@ -1,37 +1,44 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
 
-export default function ActivitySelector({ value, onChange }) {
-    const [activities, setActivities] = useState([])
+export default function ActivitySelector({ activities, onSelect }) {
+    const [search, setSearch] = useState("")
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/activity/all")
-            .then(res => {
-                if (res.data.code === "200") {
-                    setActivities(res.data.data) // VenueVO[]
-                    console.log("activities:", res.data.data)
-                }
-            })
-            .catch(err => {
-                console.error("获取活动失败", err)
-            })
-    }, [])
+    // 根据输入进行模糊过滤
+    const filtered = activities.filter(
+        act =>
+            act.activityName.includes(search) ||
+            act.venueName?.includes(search)
+    )
 
     return (
-        <>
+        <div className="mb-4">
             <input
                 list="activity-options"
-                placeholder="活动搜索"
+                placeholder="活动名称或场馆搜索"
                 className="w-full border p-2 rounded"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                required
+                value={search}
+                onChange={e => setSearch(e.target.value)}
             />
-            <datalist id="venue-options">
+            <datalist id="activity-options">
                 {activities.map((activity) => (
                     <option key={activity.id} value={activity.activityName} />
                 ))}
             </datalist>
-        </>
+            <div>
+                {search &&
+                    filtered.slice(0, 5).map((activity) => (
+                        <div
+                            key={activity.id}
+                            className="cursor-pointer hover:bg-green-100 px-2 py-1 rounded"
+                            onClick={() => {
+                                setSearch(activity.activityName)
+                                onSelect(activity)
+                            }}
+                        >
+                            {activity.activityName}（{activity.venueName}）
+                        </div>
+                    ))}
+            </div>
+        </div>
     )
 }

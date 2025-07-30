@@ -9,7 +9,7 @@ export default function ManageActivities() {
 
     // 获取活动列表
     const fetchActivities = () => {
-        fetch('http://localhost:8080/api/activity/allCurrent')
+        fetch('http://localhost:8080/api/activity/all')
             .then((res) => res.json())
             .then((data) => {
                 if (data.code === '200') {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ActivitySelector from '../components/ActivitySelector';
 
 export default function SignupPage() {
     const [activities, setActivities] = useState([]);
@@ -27,8 +28,22 @@ export default function SignupPage() {
 
     const formatTime = (ts) => {
         if (!ts) return '';
-        const str = ts.toString();
-        return `${str.slice(0, 4)}-${str.slice(4, 6)}-${str.slice(6, 8)} ${str.slice(8, 10)}:${str.slice(10, 12)}`;
+        let date;
+        if (typeof ts === 'object' && ts.time) {
+            date = new Date(ts.time);
+        } else if (typeof ts === 'string' && /^\d{14}$/.test(ts)) {
+            const y = ts.slice(0, 4);
+            const m = ts.slice(4, 6) - 1;
+            const d = ts.slice(6, 8);
+            const H = ts.slice(8, 10);
+            const M = ts.slice(10, 12);
+            const S = ts.slice(12, 14);
+            date = new Date(y, m, d, H, M, S);
+        } else {
+            date = new Date(ts);
+        }
+        if (isNaN(date.getTime())) return '';
+        return date.toLocaleString();
     };
 
     const handleSignup = async () => {
@@ -38,9 +53,10 @@ export default function SignupPage() {
             navigate('/login');
             return;
         }
-
-
-
+        if (!selectedActivity) {
+            alert('请选择活动');
+            return;
+        }
         const payload = {
             activityId: selectedActivity.id,
         };
@@ -75,6 +91,11 @@ export default function SignupPage() {
             {/* 左侧活动列表 */}
             <div className="md:w-1/3 w-full">
                 <h2 className="text-xl font-bold mb-4 text-green-700">可报名活动</h2>
+                {/* 搜索选择器 */}
+                <ActivitySelector
+                    activities={activities}
+                    onSelect={act => setSelectedActivity(act)}
+                />
                 <div className="space-y-2">
                     {activities.map((activity) => (
                         <div
