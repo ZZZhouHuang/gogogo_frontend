@@ -78,7 +78,7 @@ export default function CreateVenue() {
                     placeholder="场馆名称"
                     className="w-full border p-2 rounded"
                     value={form.venueName}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    onChange={(e) => setForm({ ...form, venueName: e.target.value })}
                     required
                 />
                 <input
